@@ -1,0 +1,35 @@
+./tools/cleanup
+git branch updown_master
+git checkout updown_master
+
+./tools/rand m_c1 m_c2 m_c3 m_c4 m_c5 rc_c1 rc_c2 rc_c3 rc_c4 rc_c5 
+
+
+git add m_c1 ;  git commit -m m_c1
+git add m_c2;   git commit -m m_c2
+
+git branch rc_branch 
+git checkout rc_branch
+git add rc_c1;   git commit -m "Release Candidate"
+git add rc_c2;   git commit -m "HOT FIX 1"
+
+git checkout updown_master
+git add m_c3;   git commit -m m_c3
+
+git checkout rc_branch
+git merge --no-edit -m "upstream merge master -> feature / rc (1)" updown_master
+
+git add rc_c3;   git commit -m "HOT FIX 2"
+git add rc_c4;   git commit -m "HOT FIX 3"
+
+git checkout updown_master
+git add m_c4;   git commit -m m_c4
+
+git checkout rc_branch
+git merge --no-edit -m "upstream merge master -> feature / rc (2)" updown_master
+git add rc_c4;   git commit -m "HOT FIX 4"
+
+git checkout updown_master
+git add m_c5;   git commit -m m_c5
+git merge --no-edit -m "downstream merge rc/feture -> master " rc_branch
+

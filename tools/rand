@@ -1,0 +1,15 @@
+#!/bin/bash
+CMD=sha256sum
+
+command -v $CMD 2>&1 > /dev/null
+
+if [ "$?" == "1" ]; then
+        CMD="shasum -a 256"
+fi
+
+for var in "$@"
+do
+ if [ ! -f "$var" ]; then
+od -vAn -N14 -tu < /dev/urandom | $CMD | base64 | head -c 90 > "$var"
+fi
+done

@@ -1,0 +1,12 @@
+#!/bin/bash
+FILE=$1
+IFS=$'\r\n' GLOBIGNORE='*' command eval  'REB=($(cat $FILE))'
+
+cat << EOF > $FILE
+${REB[0]}
+`echo ${REB[4]} | sed -e 's/pick/f/'`
+${REB[1]}
+`echo ${REB[5]} | sed -e 's/pick/f/'`
+${REB[2]}
+`echo ${REB[6]} | sed -e 's/pick/f/'`
+EOF

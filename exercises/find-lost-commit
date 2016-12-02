@@ -1,0 +1,29 @@
+#!/bin/bash
+./tools/cleanup
+git checkout -b lost_commit_master
+
+cp data/lines/lines_odd        commit_1_file_A.txt
+cp data/lines/lines_even       commit_2_file_A.txt
+cp data/lines/lines_bottomhalf commit_3_file_A.txt
+sed -i '1i# IF YOU SEE THIS SOMETHING IS WRONG' commit_*_file_A.txt
+
+git add commit_1_file_A.txt ; git commit -m "commit 1"
+git add commit_2_file_A.txt ; git commit -m "commit 2"
+git add commit_3_file_A.txt ; git commit -m "commit 3"
+
+
+sed -i -e 's/^# IF YOU SEE THIS SOMETHING IS WRONG/You found the lost line!!!/' commit_*_file_A.txt
+
+git add commit_* ; git commit -m "lost commit (1)"
+
+
+sed -i -e 's/^# comment /code line /' commit_1_file_A.txt
+git add commit_* ; git commit -m "wip commit 1"
+
+sed -i -e 's/^# comment /code line /' commit_2_file_A.txt
+git add commit_* ; git commit -m  "wip commit 2"
+sed -i -e 's/^# comment /code line /' commit_3_file_A.txt
+
+git add commit_* ; git commit -m  "wip commit 3"
+
+GIT_SEQUENCE_EDITOR=./tools/rebase-script git rebase -i HEAD~7

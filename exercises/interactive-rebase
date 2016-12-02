@@ -1,0 +1,66 @@
+#!/bin/bash
+./tools/cleanup
+git checkout -b rebase_ex1_master
+./tools/rand master_c1 master_c2
+git add master_c1 ; git commit -m m_c1
+git add master_c2 ; git commit -m m_c2
+
+git branch rebase_local
+git branch -u rebase_ex1_master rebase_local
+
+sed -e 's/.*5.*/# THIS IS BULLSHIT, DO NOT MERGE IT/'  data/lines/lines_empty > commit_2_file_A.txt
+git add commit_2_file_A.txt ; git commit -m "A change made by others"
+
+git checkout rebase_local
+
+cp data/lines/lines_empty  commit_1_file_A.txt
+cp data/lines/lines_empty  commit_2_file_A.txt
+cp data/lines/lines_even   commit_3_file_A.txt
+cp data/lines/lines_full   commit_3_file_C.txt
+git add commit_* ; git commit -m "wip"
+
+cp data/lines/lines_empty commit_1_file_B.txt
+cp data/lines/lines_empty commit_2_file_C.txt
+cp data/lines/lines_even  commit_1_file_C.txt
+cp data/lines/lines_even  commit_3_file_C.txt
+git add commit_* ; git commit -m "wip"
+
+cp data/lines/lines_even commit_1_file_B.txt
+cp data/lines/lines_even commit_2_file_B.txt
+cp data/lines/lines_odd commit_2_file_C.txt
+cp data/lines/lines_empty commit_3_file_B.txt
+git add commit_* ; git commit -m "wip" 
+
+sed -i -e 's/^# comment /code line /' commit_1_file_B.txt
+sed -i -e 's/^# comment /code line /' commit_2_file_B.txt
+sed -i -e 's/^# comment /code line /' commit_3_file_B.txt
+git add commit_* ; git commit -m "fixing B files" 
+
+./tools/rand dont_touch_this_file.txt
+git add dont_touch_this_file.txt ; git commit -m "don't touch this commit (1)"
+
+sed -i -e 's/^# comment /code line /' commit_3_file_A.txt
+sed -i '1i# Remamber, All files with "commit 3" should go to commit 3'  commit_3_file_A.txt
+sed -i '1i# Remamber, All files with "commit 3" should go to commit 3'  commit_3_file_B.txt
+sed -i '1i# Remamber, All files with "commit 3" should go to commit 3'  commit_3_file_C.txt
+git add commit_* ; git commit -m "commit 3 files" 
+
+sed -i '1i# Remamber, All files with "commit 1" should go to commit 1'  commit_1_file_A.txt
+sed -i '1i# Remamber, All files with "commit 1" should go to commit 1'  commit_1_file_B.txt
+sed -i '1i# Remamber, All files with "commit 1" should go to commit 1'  commit_1_file_C.txt
+
+sed -i '1i# Remamber, All files with "commit 2" should go to commit 2'  commit_2_file_A.txt
+sed -i '1i# Remamber, All files with "commit 2" should go to commit 2'  commit_2_file_B.txt
+sed -i '1i# Remamber, All files with "commit 2" should go to commit 2'  commit_2_file_C.txt
+git add commit_* ; git commit -m "wip fixing commit 1 and 2" 
+
+./tools/rand dont_touch_this_file_2.txt
+git add dont_touch_this_file_2.txt ; git commit -m "don't touch this commit (2)"
+
+sed -i -e 's/^# comment /code line /' commit_1_file_A.txt
+sed -i -e 's/^# comment /code line /' commit_1_file_C.txt
+git add commit_* ; git commit -m "commit 1 files" 
+
+sed -i -e 's/^# comment /code line /' commit_2_file_A.txt
+sed -i -e 's/^# comment /code line /' commit_2_file_C.txt
+git add commit_* ; git commit -m "commit 2 files"

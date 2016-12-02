@@ -1,0 +1,66 @@
+#!/bin/bash
+./tools/cleanup
+git branch merge_master
+git checkout merge_master
+
+./tools/rand m_c1 m_c2 m_c3 m_c4 m_c5 m_c6 b1_c1 b1_c2 b1_c3 b1_c4 b1_c5 b2_c1 b2_c2 b2_c3
+
+
+git add m_c1 ;  git commit -m m_c1
+
+git add m_c2;  git commit -m m_c2
+
+
+
+git add m_c3;  git commit -m m_c3
+
+git branch merge_b1 merge_master^~1
+git checkout merge_b1
+
+git add b1_c1 ;  git commit -m b1_c1
+
+
+git add b1_c2 ;  git commit -m b1_c2
+
+git checkout merge_master
+git add m_c4 ;  git commit -m m_c4
+
+git checkout merge_b1
+git merge --no-edit -m "get upstream" merge_master
+
+git branch merge_b2
+
+
+git checkout merge_b2
+
+git add b2_c1 ; git commit -m b2_c1
+
+git checkout merge_master
+git add m_c5 ;  git commit -m m_c5
+
+git checkout merge_b1
+git merge --no-edit -m "get upstream" merge_master
+
+git checkout merge_b2
+git merge --no-edit -m "get upstream" merge_master
+
+
+git add b2_c2; git commit -m b2_c2
+
+git add b2_c3; git commit -m b2_c3
+
+git checkout merge_b1
+
+git add b1_c3;  git commit -m b1_c3
+git checkout merge_b2
+git merge --no-edit -m "get upstream" merge_b1
+git checkout merge_b1
+git add b1_c4 ;  git commit -m b1_c4
+
+
+git merge --no-edit -m "merge b1 and b2" merge_b2
+git checkout merge_master
+git add b1_c5 ;  git commit -m b1_c5
+git merge --no-edit -m "merge master and b1" merge_b1
+git add m_c6 ;  git commit -m m_c6
+

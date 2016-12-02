@@ -1,0 +1,93 @@
+#!/bin/bash
+./tools/cleanup
+git branch rebase_master
+git checkout rebase_master
+
+./tools/rand m_c1 m_c2 m_c3 m_c4 m_c6 b1_c1 b1_c2 b1_c3 b1_c4 b1_c5 b2_c2 b2_c3
+
+
+git add m_c1 ;  git commit -m m_c1
+
+git add m_c2;  git commit -m m_c2
+
+
+
+git add m_c3;  git commit -m m_c3
+
+git branch rebase_b1 rebase_master^~1
+git checkout rebase_b1
+
+git add b1_c1 ;  git commit -m b1_c1
+
+
+git add b1_c2 ;  git commit -m b1_c2
+
+git checkout rebase_master
+git add m_c4 ;  git commit -m m_c4
+
+git checkout rebase_b1
+
+read -p "[01] before rebase to master"
+git rebase rebase_master
+read -p "[02] after rebase to master"
+
+git branch rebase_b2
+git checkout rebase_b2
+
+./tools/rand b2_c1
+git add b2_c1 ; git commit -m b2_c1
+
+git checkout rebase_master
+
+./tools/rand m_c5
+git add m_c5 ;  git commit -m m_c5
+
+git checkout rebase_b1
+
+read -p "[03] before rebase b1 to master"
+git rebase rebase_master
+
+git checkout rebase_b2
+
+read -p "[04] before rebase b2 to b1"
+git rebase rebase_b1
+read -p "[05] after rebase b2 to b1"
+
+git add b2_c2; git commit -m b2_c2
+
+git add b2_c3; git commit -m b2_c3
+
+
+git checkout rebase_b1
+
+git add b1_c3;  git commit -m b1_c3
+
+git checkout rebase_b2
+
+read -p "[06] before rebase b2 to b1"
+git rebase rebase_b1
+read -p "[07] after rebase b2 to b1"
+
+git checkout rebase_b1
+git add b1_c4 ;  git commit -m b1_c4
+
+git checkout rebase_b2
+
+read -p "[08] before rebase b2 to b1"
+git rebase rebase_b1
+read -p "[09] after rebase b2 to b1"
+
+
+git checkout rebase_b1
+git add b1_c5 ;  git commit -m b1_c5
+git checkout rebase_b2
+
+read -p "[10] before rebase b2 to b1"
+git rebase rebase_b1
+read -p "[11] after rebase b2 to b1"
+
+git checkout rebase_master
+read -p "[12] before rebase b2 to master"
+git merge rebase_b2
+git add m_c6 ;  git commit -m m_c6
+

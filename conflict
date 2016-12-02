@@ -1,0 +1,29 @@
+./tools/cleanup
+git branch conflict_master
+git checkout conflict_master
+cp data/conflict/base some_file.txt
+
+git add some_file.txt ; git commit -m "base added"
+./tools/rand m_c1 m_c2 m_c3
+
+
+git add m_c1 ;  git commit -m m_c1
+
+git branch conflict_branch 
+git add m_c2;   git commit -m m_c2
+
+cp data/conflict/master some_file.txt
+
+git add some_file.txt ; git commit -a -m "master version added"
+git add m_c3;   git commit -m m_c3
+
+git checkout conflict_branch
+./tools/rand b_c1 b_c2
+git add b_c1; git commit -m b_c1
+cp data/conflict/branch some_file.txt
+git add some_file.txt ; git commit -m "branch version added"
+git add b_c2; git commit -m b_c2
+
+read -p "before rebase"
+git rebase conflict_master
+

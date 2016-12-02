@@ -1,0 +1,7 @@
+#!/bin/bash
+git reset
+git checkout master
+git branch -D $(git branch | grep -i _) 2>/dev/null
+git tag -d $(git tag | grep -i _) 2>/dev/null
+rm -f check *_*
+

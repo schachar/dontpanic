@@ -1,0 +1,44 @@
+#!/bin/bash
+./tools/cleanup
+git branch relref_master
+git checkout relref_master
+
+./tools/rand m_c1 m_c2 m_c3 m_c4 m_c5 m_c6 b1_c1 b1_c2 b1_c3 b1_c4 b1_c4 b2_c1 b2_c2 b2_c3 b2_c4
+
+
+git add m_c1 ;  git commit -m "HEAD~6"
+
+git add m_c2;  git commit -m "HEAD~5"
+
+
+git add m_c3;  git commit -m "HEAD~4"
+
+git add m_c4;  git commit -m "HEAD~3"
+
+git branch relref_b1 relref_master^~2
+
+
+git checkout relref_b1
+
+git add b1_c1 ;  git commit -m "HEAD^^2~4 = HEAD^^2^2~4"
+git add b1_c2 ;  git commit -m "HEAD^^2~3 = HEAD^^2^2~3"
+git add b1_c3 ;  git commit -m "HEAD^1^2^2~2 = HEAD^^2~2" 
+
+git branch relref_b2
+git checkout relref_b2
+
+git add b2_c1 ; git commit -m "HEAD^1^2^2~"
+
+git add b2_c2 ; git commit -m "HEAD^1^2^2"
+
+
+git checkout relref_b1
+git add b1_c4 ; git commit -m "HEAD^1^2~ = HEAD^^2~"
+
+
+git merge --no-edit -m "HEAD^1^2 = HEAD^^2" relref_b2
+git checkout relref_master
+git add m_c5 ;  git commit -m "HEAD^~ = HEAD^~1 = HEAD~"
+git merge --no-edit -m "HEAD^ = HEAD^~0 = HEAD~" relref_b1
+git add m_c6 ;  git commit -m HEAD
+
